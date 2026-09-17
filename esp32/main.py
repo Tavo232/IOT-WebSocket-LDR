@@ -950,10 +950,51 @@ async def main():
 # INICIO
 # ==========================================
 
+# ==========================================
+# MODO DE CONFIGURACION
+# ==========================================
+
+boton_boot = Pin(0, Pin.IN, Pin.PULL_UP)
+
+
+def entrar_modo_configuracion():
+
+    print()
+    print("==============================")
+    print(" INICIO ESP32")
+    print("==============================")
+    print("Presiona BOOT para configurar")
+    print("Esperando 5 segundos...")
+    print("==============================")
+
+    # Durante 5 segundos revisa si se pulsa BOOT
+    for i in range(50):
+
+        if boton_boot.value() == 0:
+
+            print()
+            print("BOOT presionado")
+            print("Iniciando ESP32-CONFIG...")
+
+            time.sleep_ms(500)
+
+            return True
+
+        time.sleep_ms(100)
+
+    return False
+
+
+# ==========================================
+# INICIO
+# ==========================================
+
 config_inicio = cargar_config()
 
+modo_configuracion = entrar_modo_configuracion()
 
-if config_inicio is None:
+
+if config_inicio is None or modo_configuracion:
 
     portal_configuracion()
 
