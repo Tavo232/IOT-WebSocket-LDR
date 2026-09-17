@@ -1,0 +1,6 @@
+{
+    "ssid": "NOMBRE_DE_TU_WIFI",
+    "password": "CONTRASENA_DE_TU_WIFI",
+    "websocket": "ws://IP_DEL_SERVIDOR:8080/",
+    "token": "TOKEN_DEL_DISPOSITIVO"
+}

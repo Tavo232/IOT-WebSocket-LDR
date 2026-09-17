@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Prueba HTTP Polling
+</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    background: #f4f6f8;
+    text-align: center;
+    padding: 40px;
+}
+
+.card {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.1);
+}
+
+.valor {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.contador {
+    font-size: 24px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+<h1>
+HTTP Polling
+</h1>
+
+<p>
+Solicitud HTTP cada 2 segundos
+</p>
+
+
+<div
+class="valor"
+id="valor">
+
+---
+
+</div>
+
+<p>
+Valor ADC simulado
+</p>
+
+
+<p class="contador">
+
+Solicitudes:
+
+<strong id="contador">
+0
+</strong>
+
+</p>
+
+
+<p>
+
+Tiempo:
+
+<strong id="tiempo">
+0
+</strong>
+
+segundos
+
+</p>
+
+
+</div>
+
+
+<script>
+
+let contador = 0;
+
+let inicio =
+    performance.now();
+
+
+async function consultar() {
+
+    try {
+
+        const respuesta =
+            await fetch(
+                "http://192.168.0.191:8081/telemetria"
+            );
+
+
+        const datos =
+            await respuesta.json();
+
+
+        contador++;
+
+
+        document.getElementById(
+            "valor"
+        ).textContent =
+            datos.luz;
+
+
+        document.getElementById(
+            "contador"
+        ).textContent =
+            contador;
+
+
+        const tiempo =
+            (
+                performance.now()
+                - inicio
+            ) / 1000;
+
+
+        document.getElementById(
+            "tiempo"
+        ).textContent =
+            tiempo.toFixed(1);
+
+    }
+
+    catch(error) {
+
+        console.log(
+            "Error HTTP:",
+            error
+        );
+
+    }
+
+}
+
+
+consultar();
+
+
+setInterval(
+    consultar,
+    2000
+);
+
+</script>
+
+
+</body>
+
+</html>
