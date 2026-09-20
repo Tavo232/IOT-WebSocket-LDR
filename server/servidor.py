@@ -1,6 +1,7 @@
 import asyncio
 import json
 import time
+import os
 import websockets
 from datetime import datetime
 
@@ -10,6 +11,11 @@ from datetime import datetime
 # ==========================================
 
 TOKEN_VALIDO = "iot-esp32-01"
+
+# Render proporciona el puerto mediante la
+# variable de entorno PORT.
+# En local seguirá utilizando 8080.
+PORT = int(os.environ.get("PORT", 8080))
 
 esp32 = None
 navegadores = set()
@@ -387,7 +393,8 @@ async def main():
     print("==============================")
     print(" SERVIDOR IoT WEBSOCKET")
     print("==============================")
-    print("Puerto: 8080")
+    print(f"Puerto: {PORT}")
+    print("Host: 0.0.0.0")
     print("Autenticacion: ACTIVADA")
     print("Heartbeat: ACTIVADO")
     print("Latencia: ACTIVADA")
@@ -398,10 +405,11 @@ async def main():
     async with websockets.serve(
         manejar_cliente,
         "0.0.0.0",
-        8080
+        PORT
     ):
 
         await asyncio.Future()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
