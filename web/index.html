@@ -4,226 +4,222 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>
-Monitor IoT ESP32
-</title>
+    <title>
+        Monitor IoT ESP32
+    </title>
 
 
-<style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-* {
-    box-sizing: border-box;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    color: #222;
-}
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
 
-header {
-    background: #1f2937;
-    color: white;
-    padding: 25px;
-    text-align: center;
-}
+        header h1 {
+            margin: 0;
+        }
 
-header h1 {
-    margin: 0;
-}
+        .container {
+            max-width: 1050px;
+            margin: 30px auto;
+            padding: 20px;
+        }
 
-.container {
-    max-width: 1050px;
-    margin: 30px auto;
-    padding: 20px;
-}
+        .estado-conexion,
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, .08);
+        }
 
-.estado-conexion,
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.08);
-}
+        .estado-conexion {
+            margin-bottom: 20px;
+        }
 
-.estado-conexion {
-    margin-bottom: 20px;
-}
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 20px;
+        }
 
-.grid {
-    display: grid;
-    grid-template-columns:
-        repeat(2, 1fr);
-    gap: 20px;
-}
+        .conectado {
+            color: #16a34a;
+        }
 
-.conectado {
-    color: #16a34a;
-}
+        .desconectado {
+            color: #dc2626;
+        }
 
-.desconectado {
-    color: #dc2626;
-}
+        .esperando {
+            color: #d97706;
+        }
 
-.esperando {
-    color: #d97706;
-}
+        .valor {
+            font-size: 50px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
 
-.valor {
-    font-size: 50px;
-    font-weight: bold;
-    margin: 20px 0;
-}
+        .barra {
+            width: 100%;
+            height: 25px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
 
-.barra {
-    width: 100%;
-    height: 25px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    overflow: hidden;
-}
+        .nivel {
+            width: 0%;
+            height: 100%;
+            background: #f59e0b;
+            transition: width .3s;
+        }
 
-.nivel {
-    width: 0%;
-    height: 100%;
-    background: #f59e0b;
-    transition: width .3s;
-}
+        .porcentaje {
+            margin-top: 10px;
+            font-size: 22px;
+        }
 
-.porcentaje {
-    margin-top: 10px;
-    font-size: 22px;
-}
+        .estado-led {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
 
-.estado-led {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 25px 0;
-}
+        button {
+            border: none;
+            padding: 14px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-button {
-    border: none;
-    padding: 14px 25px;
-    margin: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-}
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
 
-button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-}
+        .encender {
+            background: #16a34a;
+            color: white;
+        }
 
-.encender {
-    background: #16a34a;
-    color: white;
-}
+        .apagar {
+            background: #dc2626;
+            color: white;
+        }
 
-.apagar {
-    background: #dc2626;
-    color: white;
-}
+        .latencia {
+            margin-top: 20px;
+        }
 
-.latencia {
-    margin-top: 20px;
-}
+        .latencia-principal {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
 
-.latencia-principal {
-    font-size: 42px;
-    font-weight: bold;
-    margin: 15px 0;
-}
+        .estadisticas {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.estadisticas {
-    display: grid;
-    grid-template-columns:
-        repeat(4, 1fr);
-    gap: 10px;
-    margin-top: 20px;
-}
+        .estadistica {
+            background: #f3f4f6;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
 
-.estadistica {
-    background: #f3f4f6;
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-}
+        .estadistica strong {
+            display: block;
+            font-size: 20px;
+            margin-top: 5px;
+        }
 
-.estadistica strong {
-    display: block;
-    font-size: 20px;
-    margin-top: 5px;
-}
+        .historial {
+            margin-top: 20px;
+        }
 
-.historial {
-    margin-top: 20px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom:
+                1px solid #ddd;
+        }
 
-th,
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom:
-        1px solid #ddd;
-}
+        th {
+            background: #f3f4f6;
+        }
 
-th {
-    background: #f3f4f6;
-}
+        .mensaje {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
 
-.mensaje {
-    margin-top: 20px;
-    padding: 12px;
-    border-radius: 8px;
-    display: none;
-}
+        .mensaje-error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
 
-.mensaje-error {
-    display: block;
-    background: #fee2e2;
-    color: #991b1b;
-}
+        .mensaje-ok {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
 
-.mensaje-ok {
-    display: block;
-    background: #dcfce7;
-    color: #166534;
-}
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+        }
 
-footer {
-    text-align: center;
-    padding: 25px;
-    color: #6b7280;
-}
+        @media(max-width:700px) {
 
-@media(max-width:700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
 
-    .grid {
-        grid-template-columns: 1fr;
-    }
+            .estadisticas {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
 
-    .estadisticas {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-}
-
-</style>
+        }
+    </style>
 
 </head>
 
@@ -231,1058 +227,1039 @@ footer {
 <body>
 
 
-<header>
+    <header>
 
-<h1>
-Sistema IoT ESP32
-</h1>
+        <h1>
+            Sistema IoT ESP32
+        </h1>
 
-<p>
-Telemetría y control bidireccional mediante WebSocket
-</p>
+        <p>
+            Telemetría y control bidireccional mediante WebSocket
+        </p>
 
-</header>
+    </header>
 
 
-<div class="container">
+    <div class="container">
 
 
-<div class="estado-conexion">
+        <div class="estado-conexion">
 
-<h2>
-Estado del sistema
-</h2>
+            <h2>
+                Estado del sistema
+            </h2>
 
-<p>
-WebSocket:
+            <p>
+                WebSocket:
 
-<strong
-id="conexion"
-class="esperando">
+                <strong id="conexion" class="esperando">
 
-CONECTANDO...
+                    CONECTANDO...
 
-</strong>
-</p>
+                </strong>
+            </p>
 
 
-<p>
-ESP32:
+            <p>
+                ESP32:
 
-<strong
-id="estadoEsp32"
-class="esperando">
+                <strong id="estadoEsp32" class="esperando">
 
-DESCONOCIDA
+                    DESCONOCIDA
 
-</strong>
-</p>
+                </strong>
+            </p>
 
-</div>
+        </div>
 
 
-<div class="grid">
+        <div class="grid">
 
 
-<!-- SENSOR -->
+            <!-- SENSOR -->
 
-<div class="card">
+            <div class="card">
 
-<h2>
-Sensor de iluminación
-</h2>
+                <h2>
+                    Sensor de iluminación
+                </h2>
 
-<div
-class="valor"
-id="luz">
+                <div class="valor" id="luz">
 
----
+                    ---
 
-</div>
+                </div>
 
-<p>
-Valor ADC
-</p>
+                <p>
+                    Valor ADC
+                </p>
 
 
-<div class="barra">
+                <div class="barra">
 
-<div
-class="nivel"
-id="nivel">
-</div>
+                    <div class="nivel" id="nivel">
+                    </div>
 
-</div>
+                </div>
 
 
-<div class="porcentaje">
+                <div class="porcentaje">
 
-Nivel relativo:
+                    Nivel relativo:
 
-<strong>
+                    <strong>
 
-<span id="porcentaje">
-0
-</span> %
+                        <span id="porcentaje">
+                            0
+                        </span> %
 
-</strong>
+                    </strong>
 
-</div>
+                </div>
 
 
-<p>
-GPIO ADC:
-<strong>34</strong>
-</p>
+                <p>
+                    GPIO ADC:
+                    <strong>34</strong>
+                </p>
 
-</div>
+            </div>
 
 
-<!-- LED -->
+            <!-- LED -->
 
-<div class="card">
+            <div class="card">
 
-<h2>
-Control del actuador
-</h2>
+                <h2>
+                    Control del actuador
+                </h2>
 
-<p>
-LED GPIO 2
-</p>
+                <p>
+                    LED GPIO 2
+                </p>
 
 
-<div
-class="estado-led"
-id="estadoLed">
+                <div class="estado-led" id="estadoLed">
 
-DESCONOCIDO
+                    DESCONOCIDO
 
-</div>
+                </div>
 
 
-<button
-id="btnEncender"
-class="encender"
-onclick="controlLed('LED_ON')">
+                <button id="btnEncender" class="encender" onclick="controlLed('LED_ON')">
 
-ENCENDER
+                    ENCENDER
 
-</button>
+                </button>
 
 
-<button
-id="btnApagar"
-class="apagar"
-onclick="controlLed('LED_OFF')">
+                <button id="btnApagar" class="apagar" onclick="controlLed('LED_OFF')">
 
-APAGAR
+                    APAGAR
 
-</button>
+                </button>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
-<!-- LATENCIA -->
+        <!-- LATENCIA -->
 
-<div class="card latencia">
+        <div class="card latencia">
 
-<h2>
-Latencia extremo a extremo
-</h2>
+            <h2>
+                Latencia extremo a extremo
+            </h2>
 
-<p>
-Tiempo desde que el dashboard envía el comando
-hasta que recibe la confirmación del ESP32.
-</p>
+            <p>
+                Tiempo desde que el dashboard envía el comando
+                hasta que recibe la confirmación del ESP32.
+            </p>
 
 
-<div
-class="latencia-principal">
+            <div class="latencia-principal">
 
-<span id="latenciaActual">
----
-</span>
+                <span id="latenciaActual">
+                    ---
+                </span>
 
-<span id="unidadLatencia">
-</span>
+                <span id="unidadLatencia">
+                </span>
 
-</div>
+            </div>
 
 
-<div class="estadisticas">
+            <div class="estadisticas">
 
 
-<div class="estadistica">
+                <div class="estadistica">
 
-Promedio
+                    Promedio
 
-<strong id="latenciaPromedio">
----
-</strong>
+                    <strong id="latenciaPromedio">
+                        ---
+                    </strong>
 
-</div>
+                </div>
 
 
-<div class="estadistica">
+                <div class="estadistica">
 
-Mínima
+                    Mínima
 
-<strong id="latenciaMinima">
----
-</strong>
+                    <strong id="latenciaMinima">
+                        ---
+                    </strong>
 
-</div>
+                </div>
 
 
-<div class="estadistica">
+                <div class="estadistica">
 
-Máxima
+                    Máxima
 
-<strong id="latenciaMaxima">
----
-</strong>
+                    <strong id="latenciaMaxima">
+                        ---
+                    </strong>
 
-</div>
+                </div>
 
 
-<div class="estadistica">
+                <div class="estadistica">
 
-Muestras
+                    Muestras
 
-<strong id="cantidadMuestras">
-0
-</strong>
+                    <strong id="cantidadMuestras">
+                        0
+                    </strong>
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
-<div
-id="mensaje"
-class="mensaje">
-</div>
+        <div id="mensaje" class="mensaje">
+        </div>
 
 
-<!-- HISTORIAL -->
+        <!-- HISTORIAL -->
 
-<div class="card historial">
+        <div class="card historial">
 
-<h2>
-Telemetría recibida
-</h2>
+            <h2>
+                Telemetría recibida
+            </h2>
 
 
-<table>
+            <table>
 
-<thead>
+                <thead>
 
-<tr>
+                    <tr>
 
-<th>#</th>
-<th>ADC</th>
-<th>Nivel relativo</th>
-<th>Hora</th>
+                        <th>#</th>
+                        <th>ADC</th>
+                        <th>Nivel relativo</th>
+                        <th>Hora</th>
 
-</tr>
+                    </tr>
 
-</thead>
+                </thead>
 
 
-<tbody id="tablaDatos">
-</tbody>
+                <tbody id="tablaDatos">
+                </tbody>
 
-</table>
+            </table>
 
-</div>
+        </div>
 
 
-<!-- HISTORIAL LATENCIA -->
+        <!-- HISTORIAL LATENCIA -->
 
-<div class="card historial">
+        <div class="card historial">
 
-<h2>
-Mediciones de latencia
-</h2>
+            <h2>
+                Mediciones de latencia
+            </h2>
 
 
-<table>
+            <table>
 
-<thead>
+                <thead>
 
-<tr>
+                    <tr>
 
-<th>Muestra</th>
-<th>Comando</th>
-<th>Estado confirmado</th>
-<th>Latencia</th>
+                        <th>Muestra</th>
+                        <th>Comando</th>
+                        <th>Estado confirmado</th>
+                        <th>Latencia</th>
 
-</tr>
+                    </tr>
 
-</thead>
+                </thead>
 
 
-<tbody id="tablaLatencia">
-</tbody>
+                <tbody id="tablaLatencia">
+                </tbody>
 
-</table>
+            </table>
 
-</div>
+        </div>
 
 
-</div>
+    </div>
 
 
-<footer>
+    <footer>
 
-ESP32 + LDR + WebSocket |
-Sistema IoT bidireccional
+        ESP32 + LDR + WebSocket |
+        Sistema IoT bidireccional
 
-</footer>
+    </footer>
 
 
-<script>
+    <script>
 
-// ==========================================
-// CONFIGURACION
-// ==========================================
+        // ==========================================
+        // CONFIGURACION
+        // ==========================================
 
-const direccion =
-    "ws://192.168.0.191:8080/";
+        const direccion =
+            "wss://iot-websocket-server.onrender.com";
 
-let websocket = null;
+        let websocket = null;
 
-let temporizadorReconexion = null;
+        let temporizadorReconexion = null;
 
-let contadorComandos = 0;
+        let contadorComandos = 0;
 
-const comandosPendientes =
-    new Map();
+        const comandosPendientes =
+            new Map();
 
-const medicionesLatencia = [];
+        const medicionesLatencia = [];
 
 
-// ==========================================
-// CONECTAR
-// ==========================================
+        // ==========================================
+        // CONECTAR
+        // ==========================================
 
-function conectarWebSocket() {
-
-    actualizarConexion(
-        "CONECTANDO...",
-        "esperando"
-    );
-
-
-    websocket =
-        new WebSocket(
-            direccion
-        );
-
-
-    websocket.onopen =
-        function() {
+        function conectarWebSocket() {
 
             actualizarConexion(
-                "CONECTADO",
-                "conectado"
+                "CONECTANDO...",
+                "esperando"
+            );
+
+
+            websocket =
+                new WebSocket(
+                    direccion
+                );
+
+
+            websocket.onopen =
+                function () {
+
+                    actualizarConexion(
+                        "CONECTADO",
+                        "conectado"
+                    );
+
+
+                    websocket.send(
+                        JSON.stringify({
+                            tipo:
+                                "navegador"
+                        })
+                    );
+
+                };
+
+
+            websocket.onmessage =
+                function (event) {
+
+                    try {
+
+                        const datos =
+                            JSON.parse(
+                                event.data
+                            );
+
+
+                        // TELEMETRIA
+
+                        if (
+                            datos.tipo ===
+                            "telemetria"
+                        ) {
+
+                            actualizarSensor(
+                                datos
+                            );
+
+                        }
+
+
+                        // ESTADO LED
+
+                        else if (
+                            datos.tipo ===
+                            "estado"
+                        ) {
+
+                            actualizarLed(
+                                datos.estado_led
+                            );
+
+
+                            if (
+                                datos.comando_id
+                            ) {
+
+                                calcularLatencia(
+                                    datos.comando_id,
+                                    datos.estado_led
+                                );
+
+                            }
+
+                        }
+
+
+                        // ESTADO ESP32
+
+                        else if (
+                            datos.tipo ===
+                            "conexion_esp32"
+                        ) {
+
+                            actualizarEstadoEsp32(
+                                datos.estado
+                            );
+
+                        }
+
+
+                        // ERROR
+
+                        else if (
+                            datos.tipo ===
+                            "error"
+                        ) {
+
+                            mostrarMensaje(
+                                datos.mensaje,
+                                "error"
+                            );
+
+                        }
+
+                    }
+
+                    catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+                    }
+
+                };
+
+
+            websocket.onclose =
+                function () {
+
+                    actualizarConexion(
+                        "DESCONECTADO",
+                        "desconectado"
+                    );
+
+
+                    actualizarEstadoEsp32(
+                        "DESCONOCIDA"
+                    );
+
+
+                    if (
+                        temporizadorReconexion
+                        === null
+                    ) {
+
+                        temporizadorReconexion =
+                            setTimeout(
+                                function () {
+
+                                    temporizadorReconexion =
+                                        null;
+
+                                    conectarWebSocket();
+
+                                },
+                                3000
+                            );
+
+                    }
+
+                };
+
+
+            websocket.onerror =
+                function () {
+
+                    actualizarConexion(
+                        "ERROR",
+                        "desconectado"
+                    );
+
+                };
+
+        }
+
+
+        // ==========================================
+        // ENVIAR COMANDO
+        // ==========================================
+
+        function controlLed(comando) {
+
+            if (
+                !websocket ||
+                websocket.readyState !==
+                WebSocket.OPEN
+            ) {
+
+                mostrarMensaje(
+                    "WebSocket desconectado.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            contadorComandos++;
+
+
+            const comandoId =
+                "cmd-" +
+                Date.now() +
+                "-" +
+                contadorComandos;
+
+
+            /*
+               performance.now() usa el mismo
+               reloj para inicio y final.
+            */
+
+            comandosPendientes.set(
+                comandoId,
+                {
+                    inicio:
+                        performance.now(),
+
+                    comando:
+                        comando
+                }
             );
 
 
             websocket.send(
                 JSON.stringify({
+
                     tipo:
-                        "navegador"
+                        "comando",
+
+                    comando:
+                        comando,
+
+                    comando_id:
+                        comandoId
+
                 })
             );
 
-        };
+
+            mostrarMensaje(
+                "Comando enviado. Esperando confirmación del ESP32...",
+                "ok"
+            );
+
+        }
 
 
-    websocket.onmessage =
-        function(event) {
+        // ==========================================
+        // CALCULAR LATENCIA
+        // ==========================================
 
-            try {
+        function calcularLatencia(
+            comandoId,
+            estado
+        ) {
 
-                const datos =
-                    JSON.parse(
-                        event.data
-                    );
+            if (
+                !comandosPendientes.has(
+                    comandoId
+                )
+            ) {
 
-
-                // TELEMETRIA
-
-                if (
-                    datos.tipo ===
-                    "telemetria"
-                ) {
-
-                    actualizarSensor(
-                        datos
-                    );
-
-                }
-
-
-                // ESTADO LED
-
-                else if (
-                    datos.tipo ===
-                    "estado"
-                ) {
-
-                    actualizarLed(
-                        datos.estado_led
-                    );
-
-
-                    if (
-                        datos.comando_id
-                    ) {
-
-                        calcularLatencia(
-                            datos.comando_id,
-                            datos.estado_led
-                        );
-
-                    }
-
-                }
-
-
-                // ESTADO ESP32
-
-                else if (
-                    datos.tipo ===
-                    "conexion_esp32"
-                ) {
-
-                    actualizarEstadoEsp32(
-                        datos.estado
-                    );
-
-                }
-
-
-                // ERROR
-
-                else if (
-                    datos.tipo ===
-                    "error"
-                ) {
-
-                    mostrarMensaje(
-                        datos.mensaje,
-                        "error"
-                    );
-
-                }
+                return;
 
             }
 
-            catch(error) {
 
-                console.error(
-                    error
+            const pendiente =
+                comandosPendientes.get(
+                    comandoId
+                );
+
+
+            const final =
+                performance.now();
+
+
+            const latencia =
+                final -
+                pendiente.inicio;
+
+
+            comandosPendientes.delete(
+                comandoId
+            );
+
+
+            medicionesLatencia.push(
+                latencia
+            );
+
+
+            document.getElementById(
+                "latenciaActual"
+            ).textContent =
+                latencia.toFixed(2);
+
+
+            document.getElementById(
+                "unidadLatencia"
+            ).textContent =
+                " ms";
+
+
+            actualizarEstadisticas();
+
+
+            agregarLatenciaTabla(
+                pendiente.comando,
+                estado,
+                latencia
+            );
+
+        }
+
+
+        // ==========================================
+        // ESTADISTICAS
+        // ==========================================
+
+        function actualizarEstadisticas() {
+
+            const cantidad =
+                medicionesLatencia.length;
+
+
+            if (cantidad === 0) {
+                return;
+            }
+
+
+            const suma =
+                medicionesLatencia.reduce(
+                    (a, b) => a + b,
+                    0
+                );
+
+
+            const promedio =
+                suma / cantidad;
+
+
+            const minima =
+                Math.min(
+                    ...medicionesLatencia
+                );
+
+
+            const maxima =
+                Math.max(
+                    ...medicionesLatencia
+                );
+
+
+            document.getElementById(
+                "latenciaPromedio"
+            ).textContent =
+                promedio.toFixed(2)
+                + " ms";
+
+
+            document.getElementById(
+                "latenciaMinima"
+            ).textContent =
+                minima.toFixed(2)
+                + " ms";
+
+
+            document.getElementById(
+                "latenciaMaxima"
+            ).textContent =
+                maxima.toFixed(2)
+                + " ms";
+
+
+            document.getElementById(
+                "cantidadMuestras"
+            ).textContent =
+                cantidad;
+
+        }
+
+
+        // ==========================================
+        // TABLA LATENCIA
+        // ==========================================
+
+        function agregarLatenciaTabla(
+            comando,
+            estado,
+            latencia
+        ) {
+
+            const tabla =
+                document.getElementById(
+                    "tablaLatencia"
+                );
+
+
+            const fila =
+                tabla.insertRow(0);
+
+
+            fila.insertCell(0)
+                .textContent =
+                medicionesLatencia.length;
+
+
+            fila.insertCell(1)
+                .textContent =
+                comando === "LED_ON"
+                    ? "ENCENDER"
+                    : "APAGAR";
+
+
+            fila.insertCell(2)
+                .textContent =
+                estado;
+
+
+            fila.insertCell(3)
+                .textContent =
+                latencia.toFixed(2)
+                + " ms";
+
+
+            if (
+                tabla.rows.length > 20
+            ) {
+
+                tabla.deleteRow(
+                    tabla.rows.length - 1
                 );
 
             }
 
-        };
+        }
 
 
-    websocket.onclose =
-        function() {
+        // ==========================================
+        // SENSOR
+        // ==========================================
 
-            actualizarConexion(
-                "DESCONECTADO",
-                "desconectado"
+        function actualizarSensor(datos) {
+
+            const valor =
+                Number(
+                    datos.luz
+                );
+
+
+            document.getElementById(
+                "luz"
+            ).textContent =
+                valor;
+
+
+            let porcentaje =
+                Math.round(
+                    (valor / 4095)
+                    * 100
+                );
+
+
+            porcentaje =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        porcentaje
+                    )
+                );
+
+
+            document.getElementById(
+                "porcentaje"
+            ).textContent =
+                porcentaje;
+
+
+            document.getElementById(
+                "nivel"
+            ).style.width =
+                porcentaje + "%";
+
+
+            agregarHistorial(
+                datos.numero,
+                valor,
+                porcentaje,
+                datos.hora
             );
 
+        }
 
-            actualizarEstadoEsp32(
-                "DESCONOCIDA"
-            );
+
+        // ==========================================
+        // HISTORIAL SENSOR
+        // ==========================================
+
+        function agregarHistorial(
+            numero,
+            valor,
+            porcentaje,
+            hora
+        ) {
+
+            const tabla =
+                document.getElementById(
+                    "tablaDatos"
+                );
+
+
+            const fila =
+                tabla.insertRow(0);
+
+
+            fila.insertCell(0)
+                .textContent =
+                numero ?? "-";
+
+
+            fila.insertCell(1)
+                .textContent =
+                valor;
+
+
+            fila.insertCell(2)
+                .textContent =
+                porcentaje + "%";
+
+
+            fila.insertCell(3)
+                .textContent =
+                hora ?? "-";
 
 
             if (
-                temporizadorReconexion
-                === null
+                tabla.rows.length > 10
             ) {
 
-                temporizadorReconexion =
-                    setTimeout(
-                        function() {
-
-                            temporizadorReconexion =
-                                null;
-
-                            conectarWebSocket();
-
-                        },
-                        3000
-                    );
+                tabla.deleteRow(
+                    tabla.rows.length - 1
+                );
 
             }
 
-        };
-
-
-    websocket.onerror =
-        function() {
-
-            actualizarConexion(
-                "ERROR",
-                "desconectado"
-            );
-
-        };
-
-}
-
-
-// ==========================================
-// ENVIAR COMANDO
-// ==========================================
-
-function controlLed(comando) {
-
-    if (
-        !websocket ||
-        websocket.readyState !==
-        WebSocket.OPEN
-    ) {
-
-        mostrarMensaje(
-            "WebSocket desconectado.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    contadorComandos++;
-
-
-    const comandoId =
-        "cmd-" +
-        Date.now() +
-        "-" +
-        contadorComandos;
-
-
-    /*
-       performance.now() usa el mismo
-       reloj para inicio y final.
-    */
-
-    comandosPendientes.set(
-        comandoId,
-        {
-            inicio:
-                performance.now(),
-
-            comando:
-                comando
         }
-    );
 
 
-    websocket.send(
-        JSON.stringify({
+        // ==========================================
+        // LED
+        // ==========================================
 
-            tipo:
-                "comando",
+        function actualizarLed(
+            estado
+        ) {
 
-            comando:
-                comando,
+            const elemento =
+                document.getElementById(
+                    "estadoLed"
+                );
 
-            comando_id:
-                comandoId
 
-        })
-    );
+            elemento.textContent =
+                estado;
 
 
-    mostrarMensaje(
-        "Comando enviado. Esperando confirmación del ESP32...",
-        "ok"
-    );
+            if (
+                estado === "ENCENDIDO"
+            ) {
 
-}
+                elemento.style.color =
+                    "#16a34a";
 
+            }
 
-// ==========================================
-// CALCULAR LATENCIA
-// ==========================================
+            else if (
+                estado === "APAGADO"
+            ) {
 
-function calcularLatencia(
-    comandoId,
-    estado
-) {
+                elemento.style.color =
+                    "#dc2626";
 
-    if (
-        !comandosPendientes.has(
-            comandoId
-        )
-    ) {
+            }
 
-        return;
+        }
 
-    }
 
+        // ==========================================
+        // CONEXION
+        // ==========================================
 
-    const pendiente =
-        comandosPendientes.get(
-            comandoId
-        );
+        function actualizarConexion(
+            texto,
+            clase
+        ) {
 
+            const elemento =
+                document.getElementById(
+                    "conexion"
+                );
 
-    const final =
-        performance.now();
 
-
-    const latencia =
-        final -
-        pendiente.inicio;
-
-
-    comandosPendientes.delete(
-        comandoId
-    );
-
-
-    medicionesLatencia.push(
-        latencia
-    );
-
-
-    document.getElementById(
-        "latenciaActual"
-    ).textContent =
-        latencia.toFixed(2);
-
-
-    document.getElementById(
-        "unidadLatencia"
-    ).textContent =
-        " ms";
-
-
-    actualizarEstadisticas();
-
-
-    agregarLatenciaTabla(
-        pendiente.comando,
-        estado,
-        latencia
-    );
-
-}
-
-
-// ==========================================
-// ESTADISTICAS
-// ==========================================
-
-function actualizarEstadisticas() {
-
-    const cantidad =
-        medicionesLatencia.length;
-
-
-    if (cantidad === 0) {
-        return;
-    }
-
-
-    const suma =
-        medicionesLatencia.reduce(
-            (a, b) => a + b,
-            0
-        );
-
-
-    const promedio =
-        suma / cantidad;
-
-
-    const minima =
-        Math.min(
-            ...medicionesLatencia
-        );
-
-
-    const maxima =
-        Math.max(
-            ...medicionesLatencia
-        );
-
-
-    document.getElementById(
-        "latenciaPromedio"
-    ).textContent =
-        promedio.toFixed(2)
-        + " ms";
-
-
-    document.getElementById(
-        "latenciaMinima"
-    ).textContent =
-        minima.toFixed(2)
-        + " ms";
-
-
-    document.getElementById(
-        "latenciaMaxima"
-    ).textContent =
-        maxima.toFixed(2)
-        + " ms";
-
-
-    document.getElementById(
-        "cantidadMuestras"
-    ).textContent =
-        cantidad;
-
-}
-
-
-// ==========================================
-// TABLA LATENCIA
-// ==========================================
-
-function agregarLatenciaTabla(
-    comando,
-    estado,
-    latencia
-) {
-
-    const tabla =
-        document.getElementById(
-            "tablaLatencia"
-        );
-
-
-    const fila =
-        tabla.insertRow(0);
-
-
-    fila.insertCell(0)
-        .textContent =
-        medicionesLatencia.length;
-
-
-    fila.insertCell(1)
-        .textContent =
-        comando === "LED_ON"
-        ? "ENCENDER"
-        : "APAGAR";
-
-
-    fila.insertCell(2)
-        .textContent =
-        estado;
-
-
-    fila.insertCell(3)
-        .textContent =
-        latencia.toFixed(2)
-        + " ms";
-
-
-    if (
-        tabla.rows.length > 20
-    ) {
-
-        tabla.deleteRow(
-            tabla.rows.length - 1
-        );
-
-    }
-
-}
-
-
-// ==========================================
-// SENSOR
-// ==========================================
-
-function actualizarSensor(datos) {
-
-    const valor =
-        Number(
-            datos.luz
-        );
-
-
-    document.getElementById(
-        "luz"
-    ).textContent =
-        valor;
-
-
-    let porcentaje =
-        Math.round(
-            (valor / 4095)
-            * 100
-        );
-
-
-    porcentaje =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                porcentaje
-            )
-        );
-
-
-    document.getElementById(
-        "porcentaje"
-    ).textContent =
-        porcentaje;
-
-
-    document.getElementById(
-        "nivel"
-    ).style.width =
-        porcentaje + "%";
-
-
-    agregarHistorial(
-        datos.numero,
-        valor,
-        porcentaje,
-        datos.hora
-    );
-
-}
-
-
-// ==========================================
-// HISTORIAL SENSOR
-// ==========================================
-
-function agregarHistorial(
-    numero,
-    valor,
-    porcentaje,
-    hora
-) {
-
-    const tabla =
-        document.getElementById(
-            "tablaDatos"
-        );
-
-
-    const fila =
-        tabla.insertRow(0);
-
-
-    fila.insertCell(0)
-        .textContent =
-        numero ?? "-";
-
-
-    fila.insertCell(1)
-        .textContent =
-        valor;
-
-
-    fila.insertCell(2)
-        .textContent =
-        porcentaje + "%";
-
-
-    fila.insertCell(3)
-        .textContent =
-        hora ?? "-";
-
-
-    if (
-        tabla.rows.length > 10
-    ) {
-
-        tabla.deleteRow(
-            tabla.rows.length - 1
-        );
-
-    }
-
-}
-
-
-// ==========================================
-// LED
-// ==========================================
-
-function actualizarLed(
-    estado
-) {
-
-    const elemento =
-        document.getElementById(
-            "estadoLed"
-        );
-
-
-    elemento.textContent =
-        estado;
-
-
-    if (
-        estado === "ENCENDIDO"
-    ) {
-
-        elemento.style.color =
-            "#16a34a";
-
-    }
-
-    else if (
-        estado === "APAGADO"
-    ) {
-
-        elemento.style.color =
-            "#dc2626";
-
-    }
-
-}
-
-
-// ==========================================
-// CONEXION
-// ==========================================
-
-function actualizarConexion(
-    texto,
-    clase
-) {
-
-    const elemento =
-        document.getElementById(
-            "conexion"
-        );
-
-
-    elemento.textContent =
-        texto;
-
-    elemento.className =
-        clase;
-
-}
-
-
-// ==========================================
-// ESP32
-// ==========================================
-
-function actualizarEstadoEsp32(
-    estado
-) {
-
-    const elemento =
-        document.getElementById(
-            "estadoEsp32"
-        );
-
-
-    elemento.textContent =
-        estado;
-
-
-    const conectado =
-        estado ===
-        "CONECTADA";
-
-
-    elemento.className =
-        conectado
-        ? "conectado"
-        : "desconectado";
-
-
-    document.getElementById(
-        "btnEncender"
-    ).disabled =
-        !conectado;
-
-
-    document.getElementById(
-        "btnApagar"
-    ).disabled =
-        !conectado;
-
-}
-
-
-// ==========================================
-// MENSAJE
-// ==========================================
-
-function mostrarMensaje(
-    texto,
-    tipo
-) {
-
-    const elemento =
-        document.getElementById(
-            "mensaje"
-        );
-
-
-    elemento.textContent =
-        texto;
-
-
-    elemento.className =
-        tipo === "error"
-        ? "mensaje mensaje-error"
-        : "mensaje mensaje-ok";
-
-
-    setTimeout(
-        function() {
+            elemento.textContent =
+                texto;
 
             elemento.className =
-                "mensaje";
+                clase;
 
-        },
-        3000
-    );
-
-}
+        }
 
 
-// ==========================================
-// INICIO
-// ==========================================
+        // ==========================================
+        // ESP32
+        // ==========================================
 
-document.getElementById(
-    "btnEncender"
-).disabled = true;
+        function actualizarEstadoEsp32(
+            estado
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    "estadoEsp32"
+                );
 
 
-document.getElementById(
-    "btnApagar"
-).disabled = true;
+            elemento.textContent =
+                estado;
 
 
-conectarWebSocket();
+            const conectado =
+                estado ===
+                "CONECTADA";
 
-</script>
+
+            elemento.className =
+                conectado
+                    ? "conectado"
+                    : "desconectado";
+
+
+            document.getElementById(
+                "btnEncender"
+            ).disabled =
+                !conectado;
+
+
+            document.getElementById(
+                "btnApagar"
+            ).disabled =
+                !conectado;
+
+        }
+
+
+        // ==========================================
+        // MENSAJE
+        // ==========================================
+
+        function mostrarMensaje(
+            texto,
+            tipo
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    "mensaje"
+                );
+
+
+            elemento.textContent =
+                texto;
+
+
+            elemento.className =
+                tipo === "error"
+                    ? "mensaje mensaje-error"
+                    : "mensaje mensaje-ok";
+
+
+            setTimeout(
+                function () {
+
+                    elemento.className =
+                        "mensaje";
+
+                },
+                3000
+            );
+
+        }
+
+
+        // ==========================================
+        // INICIO
+        // ==========================================
+
+        document.getElementById(
+            "btnEncender"
+        ).disabled = true;
+
+
+        document.getElementById(
+            "btnApagar"
+        ).disabled = true;
+
+
+        conectarWebSocket();
+
+    </script>
 
 
 </body>
